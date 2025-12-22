@@ -48,3 +48,17 @@ dotnet add package Microsoft.EntityFrameworkCore.Tools --version 8.0.0
 ```powershell
 dotnet aspnet-codegenerator identity --files "Account.Register"
 ```
+
+## MongoDB Identity
+
+```powershell
+dotnet add package AspnetCore.Identity.MongoDbCore
+```
+
+## Registrar um Usuário
+
+email: player1@play.com
+password: Passw0rd!
+```powershell
+https://localhost:5003/identity/Account/register
+```
