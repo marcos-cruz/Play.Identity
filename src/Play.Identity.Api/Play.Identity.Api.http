@@ -1,6 +1,30 @@
 @PlayIdentityApi_HostAddress = http://localhost:5002
-
-GET {{PlayIdentityApi_HostAddress}}/weatherforecast/
-Accept: application/json
+@UserId = 6f0c0a1c-4db5-45ab-a386-97b2b034cf16
+@contentType = application/json; charset=utf-8
 
 ###
+### Obtém todos os usuários registrados
+###
+GET {{PlayIdentityApi_HostAddress}}/api/users/
+Accept: application/json
+contentType: 'application/json; charset=utf-8'
+
+###
+### Obtém um usuário pelo seu Id.
+###
+GET {{PlayIdentityApi_HostAddress}}/api/users/{{UserId}}
+Accept: application/json
+contentType: 'application/json; charset=utf-8'
+
+###
+### Atualiza um usuário pelo seu Id.
+###
+PUT {{PlayIdentityApi_HostAddress}}/api/users/{{UserId}}
+Accept: application/json
+Content-Type: {{contentType}}
+
+
+{
+  "email": "string@string.com",
+  "gil": 202.00
+}

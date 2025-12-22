@@ -5,8 +5,19 @@ using Play.Common.Settings;
 using Play.Identity.Api.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
+const string AllowedOriginSetting = "AllowedOrigin";
 
 // Add services to the container.
+
+builder.Services.Configure<RouteOptions>(options =>
+{
+    options.LowercaseUrls = true;
+});
+
+builder.Services.AddControllers(options =>
+{
+    options.SuppressAsyncSuffixInActionNames = false;
+});
 
 AddMongoDbSerializers();
 
@@ -39,6 +50,19 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    var allowedOriginSettings = builder.Configuration.GetSection(AllowedOriginSetting)
+                                                     .Get<string[]>();
+
+    if (allowedOriginSettings != null && allowedOriginSettings.Length > 0)
+    {
+        app.UseCors(builder =>
+        {
+            builder.WithOrigins(allowedOriginSettings)
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+    }
 }
 
 app.UseHttpsRedirection();
