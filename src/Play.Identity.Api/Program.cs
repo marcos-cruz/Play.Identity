@@ -3,6 +3,7 @@ using MongoDB.Bson.Serialization.Serializers;
 
 using Play.Common.Settings;
 using Play.Identity.Api.Entities;
+using Play.Identity.Api.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 const string AllowedOriginSetting = "AllowedOrigin";
@@ -33,10 +34,19 @@ if (mongoDbSettings is null)
     throw new InvalidOperationException($"No '{nameof(MongoDbSettings)}' section found in configuration.");
 }
 
+var identityServerSettings = new IdentityServerSettings();
+
 builder.Services.AddDefaultIdentity<ApplicationUser>()
                 .AddRoles<ApplicationRole>()
-                .AddMongoDbStores<ApplicationUser, ApplicationRole, Guid>(mongoDbSettings.ConnectionString,
-                                                                          serviceSettings.ServiceName);
+                .AddMongoDbStores<ApplicationUser, ApplicationRole, Guid>
+                (
+                    mongoDbSettings.ConnectionString,
+                    serviceSettings.ServiceName
+                );
+
+builder.Services.AddIdentityServer()
+                .AddInMemoryApiScopes(identityServerSettings.ApiScopes)
+                .AddInMemoryClients(identityServerSettings.Clients);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -68,6 +78,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseIdentityServer();
 
 app.UseAuthorization();
 

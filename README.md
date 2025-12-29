@@ -23,6 +23,14 @@ Play.Identity é um microserviço escrito em .net 8.0, que fornece suporte para 
 * Habilitar o registro e login de usuário
 * Adicionar REST API endpoints para usuários
 
+### Módulo 1
+
+* Integrar o IdentityServer ao microsserviço de identidade.
+* Implementar a autenticação via OpenID Connect.
+* Explorar a estrutura do JSON Web Tokens.
+* Gerar um token de acesso do usuário para acessar recursos protegidos.
+* Generalizar a configuração de segurança de microsserviços.
+
 ## Bibliotecas
 
 ```powershell
@@ -62,3 +70,20 @@ password: Passw0rd!
 ```powershell
 https://localhost:5003/identity/Account/register
 ```
+
+## IdentityServer
+
+```powershell
+dotnet add package Duende.IdentityServer
+```
+
+```powershell
+dotnet add package Duende.IdentityServer.AspNetIdentity
+```
+
+## Acessando as Configurações do IdentityServer
+
+- Executar o microserviço do identity
+- Abrir o Postman e fazer um GET em `https://localhost:5003/.well-known/openid-configuration`
+
+![openid configuration](./docs/postman/openid-configuration.png)
