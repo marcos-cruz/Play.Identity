@@ -87,3 +87,10 @@ dotnet add package Duende.IdentityServer.AspNetIdentity
 - Abrir o Postman e fazer um GET em `https://localhost:5003/.well-known/openid-configuration`
 
 ![openid configuration](./docs/postman/openid-configuration.png)
+
+## Gerando Token de Autenticação Postman
+
+- Executar o microserviço do identity
+- No Postman criar um novo Get Request, sem o endpoint, configurar authentication conforme a imagem a seguir. 
+
+![Authorization Auth Type](./docs/postman/gerando-token-postman.png)

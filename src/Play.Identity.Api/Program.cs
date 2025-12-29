@@ -34,7 +34,11 @@ if (mongoDbSettings is null)
     throw new InvalidOperationException($"No '{nameof(MongoDbSettings)}' section found in configuration.");
 }
 
-var identityServerSettings = new IdentityServerSettings();
+var identityServerSettings = builder.Configuration.GetSection(nameof(IdentityServerSettings)).Get<IdentityServerSettings>();
+if (identityServerSettings is null)
+{
+    throw new InvalidOperationException($"No '{nameof(IdentityServerSettings)}' section found in configuration.");
+}
 
 builder.Services.AddDefaultIdentity<ApplicationUser>()
                 .AddRoles<ApplicationRole>()
@@ -44,7 +48,12 @@ builder.Services.AddDefaultIdentity<ApplicationUser>()
                     serviceSettings.ServiceName
                 );
 
-builder.Services.AddIdentityServer()
+builder.Services.AddIdentityServer(options =>
+{
+    options.Events.RaiseSuccessEvents = true;
+    options.Events.RaiseFailureEvents = true;
+    options.Events.RaiseErrorEvents = true;
+})
                 .AddAspNetIdentity<ApplicationUser>()
                 .AddInMemoryApiScopes(identityServerSettings.ApiScopes)
                 .AddInMemoryClients(identityServerSettings.Clients)

@@ -9,7 +9,7 @@ namespace Play.Identity.Api.Settings
         public IReadOnlyCollection<ApiScope> ApiScopes { get; set; } = Array.Empty<ApiScope>();
 
         // Clientes que tem autorização pra acessar o microserviço.
-        public IReadOnlyCollection<Client> Clients { get; set; } = Array.Empty<Client>();
+        public IReadOnlyCollection<Client> Clients { get; init; } = default!;
 
         public IReadOnlyCollection<IdentityResource> IdentityResources =>
         new IdentityResource[]
