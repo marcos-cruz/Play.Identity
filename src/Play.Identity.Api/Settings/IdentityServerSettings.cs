@@ -14,7 +14,8 @@ namespace Play.Identity.Api.Settings
         public IReadOnlyCollection<IdentityResource> IdentityResources =>
         new IdentityResource[]
         {
-            new IdentityResources.OpenId()
+            new IdentityResources.OpenId(),
+            new IdentityResources.Profile()
         };
     }
 }
