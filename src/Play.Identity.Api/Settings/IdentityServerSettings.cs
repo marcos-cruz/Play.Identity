@@ -10,5 +10,11 @@ namespace Play.Identity.Api.Settings
 
         // Clientes que tem autorização pra acessar o microserviço.
         public IReadOnlyCollection<Client> Clients { get; set; } = Array.Empty<Client>();
+
+        public IReadOnlyCollection<IdentityResource> IdentityResources =>
+        new IdentityResource[]
+        {
+            new IdentityResources.OpenId()
+        };
     }
 }

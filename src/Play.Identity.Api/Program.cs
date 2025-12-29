@@ -45,8 +45,10 @@ builder.Services.AddDefaultIdentity<ApplicationUser>()
                 );
 
 builder.Services.AddIdentityServer()
+                .AddAspNetIdentity<ApplicationUser>()
                 .AddInMemoryApiScopes(identityServerSettings.ApiScopes)
-                .AddInMemoryClients(identityServerSettings.Clients);
+                .AddInMemoryClients(identityServerSettings.Clients)
+                .AddInMemoryIdentityResources(identityServerSettings.IdentityResources);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
