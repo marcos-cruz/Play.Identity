@@ -23,13 +23,21 @@ Play.Identity é um microserviço escrito em .net 8.0, que fornece suporte para 
 * Habilitar o registro e login de usuário
 * Adicionar REST API endpoints para usuários
 
-### Módulo 1
+### Módulo 2
 
 * Integrar o IdentityServer ao microsserviço de identidade.
 * Implementar a autenticação via OpenID Connect.
 * Explorar a estrutura do JSON Web Tokens.
 * Gerar um token de acesso do usuário para acessar recursos protegidos.
 * Generalizar a configuração de segurança de microsserviços.
+
+### Módulo 3
+
+* Como armazenar secrets durante o desenvolvimento local
+* Tipos de autorização em ASP.NET Core
+* Seed users e roles no identity microservice
+* Como implementar segurança baseada em roles
+* Como implementar segurança baseada em claims
 
 ## Bibliotecas
 
@@ -94,3 +102,20 @@ dotnet add package Duende.IdentityServer.AspNetIdentity
 - No Postman criar um novo Get Request, sem o endpoint, configurar authentication conforme a imagem a seguir. 
 
 ![Authorization Auth Type](./docs/postman/gerando-token-postman.png)
+
+## Secret Manager
+
+Para inicializar um projeto para usar secrets, usar o seguinte comando: `dotnet user-secrets init` na pasta do projeto.
+
+```powershell
+dotnet user-secrets init
+Set UserSecretsId to 'c3954db9-a8f1-4861-9069-5432a607531d' for MSBuild project '/home/marcos-cruz/Projects/Play/Play.Identity/src/Play.Identity.Api/Play.Identity.Api.csproj'.
+```
+
+### Criar uma secret
+
+Para criar uma secret no ambiente de desenvolvimento, deve-se executar o comando na pasta do projeto sempre obedecendo a estrutura hierarquica definida para o arquivo, por exempolo.
+
+```powershell
+dotnet user-secrets set "IdentitySettings:AdminUserPassword" "Passw0rd!"
+```

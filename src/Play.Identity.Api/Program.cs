@@ -1,8 +1,11 @@
+using Microsoft.Extensions.Options;
+
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 
 using Play.Common.Settings;
 using Play.Identity.Api.Entities;
+using Play.Identity.Api.HostedServices;
 using Play.Identity.Api.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,6 +43,19 @@ if (identityServerSettings is null)
     throw new InvalidOperationException($"No '{nameof(IdentityServerSettings)}' section found in configuration.");
 }
 
+var identitySettings = builder.Configuration.GetSection(nameof(IdentitySettings)).Get<IdentitySettings>();
+if (identitySettings is null)
+{
+    throw new InvalidOperationException($"No '{nameof(IdentitySettings)}' section found in configuration.");
+}
+var optionsWrapper = Options.Create(identitySettings);
+builder.Services.AddSingleton<IOptions<IdentitySettings>>(optionsWrapper);
+
+//
+// alternativa para injetar IOptions<IdentitySettings> direto, sem precisar criar uma instancia.
+//
+// builder.Services.Configure<IdentitySettings>(builder.Configuration.GetSection(nameof(IdentitySettings)));
+
 builder.Services.AddDefaultIdentity<ApplicationUser>()
                 .AddRoles<ApplicationRole>()
                 .AddMongoDbStores<ApplicationUser, ApplicationRole, Guid>
@@ -64,6 +80,8 @@ builder.Services.AddIdentityServer(options =>
 builder.Services.AddLocalApiAuthentication();
 
 builder.Services.AddControllers();
+builder.Services.AddHostedService<IdentitySeedHostedService>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
